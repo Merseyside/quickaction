@@ -15,7 +15,7 @@
  *  limitations under the License.
  */
 
-package me.piruin.quickaction;
+package com.merseyside.quickaction;
 
 import android.annotation.TargetApi;
 import android.content.Context;

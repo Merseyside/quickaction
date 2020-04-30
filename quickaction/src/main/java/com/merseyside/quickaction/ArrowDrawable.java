@@ -38,7 +38,7 @@
  *  limitations under the License.
  */
 
-package me.piruin.quickaction;
+package com.merseyside.quickaction;
 
 import android.graphics.*;
 import android.graphics.drawable.ColorDrawable;

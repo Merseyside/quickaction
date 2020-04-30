@@ -15,20 +15,18 @@
  *  limitations under the License.
  */
 
-package me.piruin.quickaction.sample;
+package com.merseyside.quickaction.sample;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.piruin.quickaction.ActionItem;
-import me.piruin.quickaction.QuickAction;
-import me.piruin.quickaction.QuickIntentAction;
+import com.merseyside.quickaction.ActionItem;
+import com.merseyside.quickaction.QuickAction;
+import com.merseyside.quickaction.QuickIntentAction;
 
 public class SampleActivity extends AppCompatActivity {
 
@@ -47,9 +45,10 @@ public class SampleActivity extends AppCompatActivity {
     setContentView(R.layout.activity_sample);
     ButterKnife.bind(this);
 
+
     //Config default color
-    QuickAction.setDefaultColor(ResourcesCompat.getColor(getResources(), R.color.teal, null));
-    QuickAction.setDefaultTextColor(Color.BLACK);
+    //QuickAction.setDefaultColor(ResourcesCompat.getColor(getResources(), R.color.teal, null));
+    //QuickAction.setDefaultTextColor(Color.BLACK);
 
     ActionItem nextItem = new ActionItem(ID_DOWN, "Next", R.drawable.ic_arrow_downward);
     ActionItem prevItem = new ActionItem(ID_UP, "Prev", R.drawable.ic_arrow_upward);
@@ -62,27 +61,18 @@ public class SampleActivity extends AppCompatActivity {
     prevItem.setSticky(true);
     nextItem.setSticky(true);
 
-    //create QuickAction. Use QuickAction.VERTICAL or QuickAction.HORIZONTAL param to define layout
-    //orientation
     quickAction = new QuickAction(this, QuickAction.HORIZONTAL);
-    quickAction.setColorRes(R.color.pink);
-    quickAction.setTextColorRes(R.color.white);
-
-    //set divider with color
-    //quickAction.setDividerColor(ContextCompat.getColor(this, R.color.white));
-    //
-
-    //set enable divider default is disable for vertical
-    //quickAction.setEnabledDivider(true);
-    //Note this must be called before addActionItem()
+    quickAction.setTextViewId(R.layout.custom_text_view);
 
     //add action items into QuickAction
-    quickAction.addActionItem(nextItem, prevItem);
-    quickAction.setTextColor(Color.YELLOW);
-    quickAction.addActionItem(searchItem);
-    quickAction.addActionItem(infoItem);
-    quickAction.addActionItem(eraseItem);
-    quickAction.addActionItem(okItem);
+    quickAction.addMenuRes(R.menu.menu_sample);
+    quickAction.setAllCaps(true);
+//    quickAction.addActionItem(nextItem, prevItem);
+//    quickAction.setTextColor(Color.YELLOW);
+//    quickAction.addActionItem(searchItem);
+//    quickAction.addActionItem(infoItem);
+//    quickAction.addActionItem(eraseItem);
+//    quickAction.addActionItem(okItem);
 
     //Set listener for action item clicked
     quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {

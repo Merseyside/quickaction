@@ -15,8 +15,9 @@
  *  limitations under the License.
  */
 
-package me.piruin.quickaction;
+package com.merseyside.quickaction;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -28,12 +29,18 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
+import android.support.v7.view.menu.MenuBuilder;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -49,8 +56,8 @@ import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static me.piruin.quickaction.ArrowDrawable.ARROW_DOWN;
-import static me.piruin.quickaction.ArrowDrawable.ARROW_UP;
+import static com.merseyside.quickaction.ArrowDrawable.ARROW_DOWN;
+import static com.merseyside.quickaction.ArrowDrawable.ARROW_UP;
 
 /**
  * QuickAction popup, shows action list as icon and text in Tooltip
@@ -60,6 +67,8 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 
   public static final int HORIZONTAL = LinearLayout.HORIZONTAL;
   public static final int VERTICAL = LinearLayout.VERTICAL;
+
+  private static String TAG = "QuickAction";
 
   private static int defaultColor = Color.WHITE;
   private static int defaultTextColor = Color.BLACK;
@@ -85,6 +94,11 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
   private int dividerColor = defaultDividerColor;
   private int textColor = defaultTextColor;
 
+  private int customTextViewRes = -1;
+  private boolean isCaps = true;
+
+  private Context context;
+
   /**
    * Constructor for default vertical layout
    *
@@ -92,6 +106,7 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
    */
   public QuickAction(@NonNull Context context) {
     this(context, VERTICAL);
+    this.context = context;
   }
 
   /**
@@ -102,6 +117,8 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
    */
   public QuickAction(@NonNull Context context, int orientation) {
     super(context);
+    this.context = context;
+
     this.orientation = orientation;
     inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
@@ -111,7 +128,9 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
     shadowColor = resource.getColor(R.color.quick_action_shadow_color);
 
     setRootView(
-      orientation == VERTICAL ? R.layout.quick_action_vertical : R.layout.quick_action_horizontal);
+      orientation == VERTICAL ? R.layout.quick_action_vertical : R.layout.quick_action_horizontal
+    );
+
     enabledDivider = orientation == HORIZONTAL;
   }
 
@@ -129,6 +148,19 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 
     setContentView(rootView);
     setColor(defaultColor);
+  }
+
+  public void setTextViewId(@LayoutRes int id) {
+    this.customTextViewRes = id;
+  }
+
+  public void setAllCaps(boolean isCaps) {
+    this.isCaps = isCaps;
+  }
+
+  public void isArrowVisible(boolean isVisible) {
+    rootView.findViewById(R.id.arrow_down).setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    rootView.findViewById(R.id.arrow_down).setVisibility(isVisible ? View.VISIBLE : View.GONE);
   }
 
   /**
@@ -248,6 +280,26 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
     mItemClickListener = listener;
   }
 
+  public MenuInflater getMenuInflater() {
+    return new MenuInflater(context);
+  }
+
+  @SuppressLint("RestrictedApi")
+  public void addMenuRes(@MenuRes int menuRes) {
+    Menu menu = new MenuBuilder(context);
+
+    getMenuInflater().inflate(menuRes, menu);
+
+    for (int i = 0; i < menu.size(); i++) {
+      MenuItem item = menu.getItem(i);
+
+      ActionItem actionItem = new ActionItem(item.getItemId(), item.getTitle().toString(), item.getIcon());
+      addActionItem(actionItem);
+    }
+
+    Log.d(TAG, menu.getItem(0).getTitle().toString());
+  }
+
   public void addActionItem(final ActionItem... actions) {
     for (ActionItem item : actions) {
       addActionItem(item);
@@ -289,9 +341,20 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
   @NonNull private View createViewFrom(final ActionItem action) {
     View actionView;
     if (action.haveTitle()) {
-      TextView textView = (TextView)inflater.inflate(R.layout.quick_action_item, track, false);
-      textView.setTextColor(textColor);
+
+      TextView textView;
+
+      if (customTextViewRes == View.NO_ID) {
+        textView = (TextView)inflater.inflate(R.layout.quick_action_item, track, false);
+
+        textView.setTextColor(textColor);
+        textView.setAllCaps(isCaps);
+      } else {
+        textView = (TextView)inflater.inflate(customTextViewRes, track, false);
+      }
+
       textView.setText(String.format(" %s ", action.getTitle()));
+
       if (action.haveIcon()) {
         int iconSize = resource.getDimensionPixelOffset(R.dimen.quick_action_icon_size);
         Drawable icon = action.getIconDrawable(getContext());

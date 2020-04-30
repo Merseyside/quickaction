@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package me.piruin.quickaction;
+package com.merseyside.quickaction;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -22,7 +22,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import java.util.List;
-import me.piruin.quickaction.QuickAction.OnActionItemClickListener;
+import com.merseyside.quickaction.QuickAction.OnActionItemClickListener;
 
 /**
  * Builder to create QuickAction with ActionItem of Intent Activity or Service

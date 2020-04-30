@@ -49,7 +49,7 @@
     android:id="@+id/arrow_up"
     android:layout_width="@dimen/quick_action_arrow_width"
     android:layout_height="@dimen/quick_action_arrow_height"
-    />
+    android:visibility="gone"/>
 
   <View
     android:id="@+id/arrow_down"
@@ -57,5 +57,6 @@
     android:layout_height="@dimen/quick_action_arrow_height"
     android:layout_below="@id/scroller"
     android:layout_marginTop="-2dp"
+    android:visibility="gone"
     />
 </RelativeLayout>

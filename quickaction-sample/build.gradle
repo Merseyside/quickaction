@@ -1,15 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
-  compileSdkVersion ANDROID_TARGET_SDK
+  compileSdkVersion rootProject.compileSdkVersion
 
   defaultConfig {
-    applicationId "me.piruin.quickaction.sample"
-    testApplicationId "me.piruin.quickaction.sample.test"
-    minSdkVersion ANDROID_MIN_SDK
-    targetSdkVersion ANDROID_TARGET_SDK
-    versionCode 1
-    versionName version
+    applicationId "com.merseyside.quickaction.sample"
+    testApplicationId "com.merseyside.quickaction.sample.test"
+
+    minSdkVersion rootProject.minSdkVersion
+    targetSdkVersion rootProject.targetSdkVersion
+    versionCode rootProject.versionCode
+    versionName rootProject.versionName
+
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
 

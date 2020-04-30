@@ -15,7 +15,7 @@
  *  limitations under the License.
  */
 
-package me.piruin.quickaction;
+package com.merseyside.quickaction;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -56,6 +56,19 @@ public class ActionItem {
     this.actionId = actionId;
     this.title = title;
     this.icon = icon;
+  }
+
+  /**
+   * Create Action Item with all attribute
+   *
+   * @param actionId Action id for case statements
+   * @param title Title
+   * @param icon Icon to use
+   */
+  public ActionItem(int actionId, String title, Drawable icon) {
+    this.actionId = actionId;
+    this.title = title;
+    this.iconDrawable = icon;
   }
 
   /**
