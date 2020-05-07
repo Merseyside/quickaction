@@ -66,6 +66,9 @@ public class SampleActivity extends AppCompatActivity {
 
     //add action items into QuickAction
     quickAction.addMenuRes(R.menu.menu_sample);
+    quickAction.getActionItemById(R.id.action_copy).setTitle("kek");
+    quickAction.show();
+
     quickAction.setAllCaps(true);
 //    quickAction.addActionItem(nextItem, prevItem);
 //    quickAction.setTextColor(Color.YELLOW);

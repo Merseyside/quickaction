@@ -63,6 +63,7 @@ import static com.merseyside.quickaction.ArrowDrawable.ARROW_UP;
  * QuickAction popup, shows action list as icon and text in Tooltip
  * popup. Currently supports vertical and horizontal layout.
  */
+
 public class QuickAction extends PopupWindows implements OnDismissListener {
 
   public static final int HORIZONTAL = LinearLayout.HORIZONTAL;
@@ -284,6 +285,12 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
     return new MenuInflater(context);
   }
 
+
+  public void addMenuResAndShow(@MenuRes int menuRes) {
+    addMenuRes(menuRes);
+    show();
+  }
+
   @SuppressLint("RestrictedApi")
   public void addMenuRes(@MenuRes int menuRes) {
     Menu menu = new MenuBuilder(context);
@@ -296,9 +303,16 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
       ActionItem actionItem = new ActionItem(item.getItemId(), item.getTitle().toString(), item.getIcon());
       addActionItem(actionItem);
     }
-
-    Log.d(TAG, menu.getItem(0).getTitle().toString());
   }
+
+  public void show() {
+    for (int position = 0; position < actionItems.size(); position++) {
+
+      ActionItem actionItem = actionItems.get(position);
+      addActionView(position, createViewFrom(actionItem));
+    }
+  }
+
 
   public void addActionItem(final ActionItem... actions) {
     for (ActionItem item : actions) {
@@ -312,9 +326,7 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
    * @param action {@link ActionItem}
    */
   public void addActionItem(final ActionItem action) {
-    int position = actionItems.size();
     actionItems.add(action);
-    addActionView(position, createViewFrom(action));
   }
 
   private void addActionView(int position, View actionView) {

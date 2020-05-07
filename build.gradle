@@ -4,8 +4,8 @@ buildscript {
   ext {
     JAVA_VERSION = JavaVersion.VERSION_1_8
 
-    versionName = "2.4.4"
-    versionCode = 244
+    versionName = "2.4.5"
+    versionCode = 245
     minSdkVersion = 16
     compileSdkVersion = 29
     targetSdkVersion = 29
